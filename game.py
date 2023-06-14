@@ -1,53 +1,95 @@
-from tkinter import *
-root = Tk()
+import pygame
 
-root.title('App Tài Xỉu')
-root.geometry('650x500')
+# Thiết lập kích thước cửa sổ và các màu sắc
+WINDOW_SIZE = (600, 600)
+BLACK = (0, 0, 0)
+WHITE = (255, 255, 255)
+LINE_COLOR = (128, 128, 128)
 
-dice_face = ['\u2680', '\u2681', '\u2682', '\u2683', '\u2684', '\u2685']
-dice_label = Label(root, font=("Helvetica", 150))
-result_label = Label(root, font=("Helvetica", 40))
-result_label1 = Label(root, font=("Helvetica", 40))
+# Thiết lập kích thước và vị trí của mỗi ô vuông
+SQUARE_SIZE = 100
+MARGIN = 20
+GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
 
-radio_button = StringVar()
+# Thiết lập kích thước của đường kẻ
+LINE_WIDTH = 10
 
-rb1 = Radiobutton(root, text='Tài', value = 'Tài', variable = radio_button,  font=("Helvetica", 15))
+# Khởi tạo màn hình
+pygame.init()
+screen = pygame.display.set_mode(WINDOW_SIZE)
+pygame.display.set_caption('Caro')
 
-rb2 = Radiobutton(root, text='Xỉu', value = 'Xỉu', variable = radio_button,  font=("Helvetica", 15))
+# Vẽ lưới trên màn hình
+def draw_grid():
+    for i in range(3):
+        for j in range(3):
+            x = MARGIN * (j + 1) + SQUARE_SIZE * j
+            y = MARGIN * (i + 1) + SQUARE_SIZE * i
+            pygame.draw.rect(screen, WHITE, (x, y, SQUARE_SIZE, SQUARE_SIZE))
+            pygame.draw.rect(screen, LINE_COLOR, (x, y, SQUARE_SIZE, SQUARE_SIZE), LINE_WIDTH)
 
-rb1.pack()
-rb2.pack()
-def roll():
-    import random
-    xucXac1 = random.randint(1, 6)
-    xucXac2 = random.randint(1, 6)
-    xucXac3 = random.randint(1, 6)
-    
-    dice_label.config(
-        text=f'{dice_face[xucXac1 - 1]}{dice_face[xucXac2 - 1]}{dice_face[xucXac3 - 1]}'
-    )
-    dice_label.pack()
-    
-    sum = xucXac1 + xucXac2 + xucXac3
-    result_label.config(text = 'Tài' if sum > 10 else 'Xỉu',
-                        foreground='red' if sum > 10 else 'green')
-    result_label.pack()
-    
-def check():
-    global coin
-    if radio_button.get() == result_label["text"]:
-        coin += 50
-        result_text = 'Bạn đã được +50K VNĐ'
-        result_fg = 'green'
+# Vẽ ký hiệu 'X' hoặc 'O' trên màn hình
+def draw_xo(x, y, player):
+    font = pygame.font.SysFont(None, 200)
+    if player == 1:
+        text = font.render('X', True, BLACK)
     else:
-        coin -= 50
-        result_text = 'Bạn vừa bị -50K VNĐ'
-        result_fg = 'red'
-    result_label1.config(text=result_text+" \n"+"Tổng tiền hiện có: "+str(coin)+"K VNĐ", foreground=result_fg)
-    result_label1.pack()
-    
-coin = 0
-myButton1 = Button(root, text='Quay xúc xắc!', command=lambda : [roll(), check()], foreground="blue")
-myButton1.pack()
-  
-root.mainloop()
+        text = font.render('O', True, BLACK)
+    text_rect = text.get_rect(center=(x, y))
+    screen.blit(text, text_rect)
+
+# Kiểm tra xem người chơi có thắng hay không
+def check_win(board, player):
+    for i in range(3):
+        if board[i][0] == player and board[i][1] == player and board[i][2] == player:
+            return True
+        if board[0][i] == player and board[1][i] == player and board[2][i] == player:
+            return True
+    if board[0][0] == player and board[1][1] == player and board[2][2] == player:
+        return True
+    if board[0][2] == player and board[1][1] == player and board[2][0] == player:
+        return True
+    return False
+
+# Khởi tạo bảng và người chơi
+board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+current_player = 1
+
+# Vòng lặp chính của trò chơi
+running = True
+while running:
+    # Xử lý sự kiện từ người dùng
+    for event in pygame.event.get():
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.MOUSEBUTTONDOWN:
+            # Lấy tọa độ của chuột khi người dùng click vào màn hình
+            x, y = pygame.mouse.get_pos()
+            # Tính toán vị trí của ô vuông tương ứng với tọa độ của chuột
+            row = (y - MARGIN) // (SQUARE_SIZE + MARGIN)
+            col = (x - MARGIN) // (SQUARE_SIZE + MARGIN)
+            # Đặt ký hiệu 'X' hoặc 'O' vào ô vuông tương ứng và chuyển lượt cho người chơi khác
+            if board[row][col] == 0:
+                board[row][col] = current_player
+                draw_xo(x, y, current_player)
+                if check_win(board,current_player):
+                    print(f"Player {current_player} wins!")
+                    running = False
+                else:
+                    current_player = 2 if current_player == 1 else 1
+
+    # Vẽ lưới và các ký hiệu 'X' hoặc 'O' lên màn hình
+    screen.fill(BLACK)
+    draw_grid()
+    for i in range(3):
+        for j in range(3):
+            if board[i][j] != 0:
+                x = MARGIN * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
+                y = MARGIN * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
+                draw_xo(x, y, board[i][j])
+
+    # Cập nhật màn hình
+    pygame.display.update()
+
+# Kết thúc trò chơi và đóng cửa sổ
+pygame.quit()
