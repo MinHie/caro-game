@@ -4,18 +4,17 @@ import os
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
-image_path = "img/board.png"
-original_image = pygame.image.load(image_path)
-scaled_image = pygame.transform.scale(original_image, (80, 60))
+background_color = (168, 96, 93)
 
-
-screen.blit(scaled_image, (0, 0))
-pygame.display.flip()
+tic = pygame.transform.scale(pygame.image.load('images/x.png'), (50, 50))
+toe = pygame.transform.scale(pygame.image.load('images/o.png'), (50, 50))
 
 running = True
 while running:
+    screen.fill(background_color)
+    screen.blit(tic, (10, 10))
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-
+    pygame.display.flip()
 pygame.quit()
