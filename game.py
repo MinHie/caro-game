@@ -11,9 +11,9 @@ result_label1 = Label(root, font=("Helvetica", 40))
 
 radio_button = StringVar()
 
-rb1 = Radiobutton(root, text='con cặc', value = 'Tài', variable = radio_button,  font=("Helvetica", 15))
+rb1 = Radiobutton(root, text='Tài', value = 'Tài', variable = radio_button,  font=("Helvetica", 15))
 
-rb2 = Radiobutton(root, text='cái lồn', value = 'Xỉu', variable = radio_button,  font=("Helvetica", 15))
+rb2 = Radiobutton(root, text='Xỉu', value = 'Xỉu', variable = radio_button,  font=("Helvetica", 15))
 
 rb1.pack()
 rb2.pack()
