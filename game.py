@@ -4,16 +4,18 @@ import os
 pygame.init()
 screen = pygame.display.set_mode((1200, 720))
 SQUARE_SIZE = 100
-MARGIN = 20
+MARGIN = 0
 GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
+TIC_SIZE = 94
+
 background_color = (168, 96, 93)
 # Vẽ ký hiệu 'X' hoặc 'O' trên màn hình
 def draw_xo(x, y, player):
     if player == 1:
-        tic = pygame.transform.scale(pygame.image.load('images/x.png'), (52, 52))
+        tic = pygame.transform.scale(pygame.image.load('images/x.png'), (TIC_SIZE, TIC_SIZE))
     else:
-        tic = pygame.transform.scale(pygame.image.load('images/o.png'), (52, 52))
-    text_rect = tic.get_rect(center=(x, y))
+        tic = pygame.transform.scale(pygame.image.load('images/o.png'), (TIC_SIZE, TIC_SIZE))
+    text_rect = tic.get_rect(center=(x+2, y+2))
     screen.blit(tic, text_rect)
 # Kiểm tra xem người chơi có thắng hay không
 def check_win(board, player):
@@ -32,8 +34,8 @@ def check_win(board, player):
 def draw_grid():
     board = pygame.transform.scale(
             pygame.image.load('images/board.png'), (336, 336))
-    board_x = 10
-    board_y = 10
+    board_x = 5
+    board_y = 5
     
     screen.blit(board, (board_x, board_y))
     screen.blit(board, (board_x+336-6, board_y))
