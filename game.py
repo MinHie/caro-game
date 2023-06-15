@@ -6,9 +6,8 @@ SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 SQUARE_SIZE = 100
-MARGIN = 0
-GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
-TIC_SIZE = 94
+MARGIN = 10
+TIC_SIZE = 90
 
 x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
 o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
