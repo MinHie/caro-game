@@ -39,9 +39,12 @@ def draw_grid():
     
     screen.blit(board, (board_x, board_y))
     screen.blit(board, (board_x+336-6, board_y))
+    
 
 # Khởi tạo bảng và người chơi
-board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
+num_rows = 10
+num_cols = 10
+board = [[0 for j in range(num_cols)] for i in range(num_rows)]
 current_player = 1
 
 # Vòng lặp chính của trò chơi
@@ -70,8 +73,8 @@ while running:
     # Vẽ lưới và các ký hiệu 'X' hoặc 'O' lên màn hình
     screen.fill(background_color)
     draw_grid()
-    for i in range(3):
-        for j in range(3):
+    for i in range(num_cols):
+        for j in range(num_rows):
             if board[i][j] != 0:
                 x = 10 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
                 y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
