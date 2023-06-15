@@ -5,10 +5,12 @@ pygame.init()
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-SQUARE_SIZE = 100
-MARGIN = 0
-GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
-TIC_SIZE = 94
+BOARD_SIZE = 168
+BOARD_LINE = 3
+TIC_SIZE = 47
+SQUARE_SIZE = 47
+MARGIN = 10
+
 
 x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
 o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
@@ -26,7 +28,8 @@ def draw_xo(x, y, player):
         tic = pygame.transform.scale(
             pygame.image.load("images/o.png"), (TIC_SIZE, TIC_SIZE)
         )
-    text_rect = tic.get_rect(center=(x + 2, y + 2))
+    print(x, y)
+    text_rect = tic.get_rect(center=(x, y))
     screen.blit(tic, text_rect)
 
 
@@ -46,16 +49,20 @@ def check_win(board, player):
 
 # Vẽ lưới
 def draw_grid():
-    board = pygame.transform.scale(pygame.image.load("images/board.png"), (336, 336))
-    board_x = 5
-    board_y = 5
-    screen.blit(board, (board_x, board_y))
-    screen.blit(board, (board_x + 336 - 6, board_y))
+    board = pygame.transform.scale(
+        pygame.image.load("images/board.png"), (BOARD_SIZE, BOARD_SIZE)
+    )
+    board_x = 10
+    board_y = 10
+    x = BOARD_SIZE - BOARD_LINE
+    for i in range(0, 3):
+        for j in range(0, 2):
+            screen.blit(board, (board_x + x * i, board_y + x * j))
 
 
 # Khởi tạo bảng và người chơi
-num_rows = 10
-num_cols = 10
+num_rows = 12
+num_cols = 12
 board = [[0 for j in range(num_cols)] for i in range(num_rows)]
 current_player = 1
 
@@ -87,8 +94,8 @@ while running:
     for i in range(num_cols):
         for j in range(num_rows):
             if board[i][j] != 0:
-                x = 10 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
-                y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
+                x = 13 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
+                y = 13 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
                 draw_xo(x, y, board[i][j])
 
     # Cập nhật màn hình
