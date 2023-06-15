@@ -4,7 +4,7 @@ import os
 pygame.init()
 screen = pygame.display.set_mode((800, 600))
 
-image_path = "img/board.png"
+image_path = "caro-game/images/background.png"
 original_image = pygame.image.load(image_path)
 scaled_image = pygame.transform.scale(original_image, (80, 60))
 
