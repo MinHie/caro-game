@@ -2,7 +2,7 @@ import pygame
 import os
 
 pygame.init()
-screen = pygame.display.set_mode((800, 600))
+screen = pygame.display.set_mode((1200, 720))
 SQUARE_SIZE = 100
 MARGIN = 20
 GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
@@ -30,12 +30,13 @@ def check_win(board, player):
 
 #Vẽ lưới
 def draw_grid():
-    for i in range(3):
-        for j in range(3):
-            board = pygame.transform.scale(
-                    pygame.image.load('images/board.png'), (168, 168))
-            board_x = 10
-            board_y = 10
+    board = pygame.transform.scale(
+            pygame.image.load('images/board.png'), (336, 336))
+    board_x = 10
+    board_y = 10
+    
+    screen.blit(board, (board_x, board_y))
+    screen.blit(board, (board_x+336-6, board_y))
 
 # Khởi tạo bảng và người chơi
 board = [[0, 0, 0], [0, 0, 0], [0, 0, 0]]
