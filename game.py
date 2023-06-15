@@ -5,12 +5,11 @@ pygame.init()
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
 screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
-BOARD_SIZE = 168
-BOARD_LINE = 3
-TIC_SIZE = 47
-SQUARE_SIZE = 47
+BOARD_SIZE = 336
+BOARD_LINE = 6
+SQUARE_SIZE = 100
 MARGIN = 10
-
+TIC_SIZE = 90
 
 x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
 o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
@@ -28,8 +27,7 @@ def draw_xo(x, y, player):
         tic = pygame.transform.scale(
             pygame.image.load("images/o.png"), (TIC_SIZE, TIC_SIZE)
         )
-    print(x, y)
-    text_rect = tic.get_rect(center=(x, y))
+    text_rect = tic.get_rect(center=(x+BOARD_LINE, y+BOARD_LINE))
     screen.blit(tic, text_rect)
 
 
@@ -94,8 +92,8 @@ while running:
     for i in range(num_cols):
         for j in range(num_rows):
             if board[i][j] != 0:
-                x = 13 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
-                y = 13 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
+                x = 10 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
+                y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
                 draw_xo(x, y, board[i][j])
 
     # Cập nhật màn hình
