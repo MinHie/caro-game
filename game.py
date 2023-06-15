@@ -2,21 +2,34 @@ import pygame
 import os
 
 pygame.init()
-screen = pygame.display.set_mode((1200, 720))
+SCREEN_WIDTH = 1200
+SCREEN_HEIGHT = 720
+screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
 SQUARE_SIZE = 100
 MARGIN = 0
 GRID_SIZE = SQUARE_SIZE * 3 + MARGIN * 4
 TIC_SIZE = 94
 
+x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
+o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
+
 background_color = (168, 96, 93)
+
+
 # Vẽ ký hiệu 'X' hoặc 'O' trên màn hình
 def draw_xo(x, y, player):
     if player == 1:
-        tic = pygame.transform.scale(pygame.image.load('images/x.png'), (TIC_SIZE, TIC_SIZE))
+        tic = pygame.transform.scale(
+            pygame.image.load("images/x.png"), (TIC_SIZE, TIC_SIZE)
+        )
     else:
-        tic = pygame.transform.scale(pygame.image.load('images/o.png'), (TIC_SIZE, TIC_SIZE))
-    text_rect = tic.get_rect(center=(x+2, y+2))
+        tic = pygame.transform.scale(
+            pygame.image.load("images/o.png"), (TIC_SIZE, TIC_SIZE)
+        )
+    text_rect = tic.get_rect(center=(x + 2, y + 2))
     screen.blit(tic, text_rect)
+
+
 # Kiểm tra xem người chơi có thắng hay không
 def check_win(board, player):
     for i in range(3):
@@ -30,16 +43,15 @@ def check_win(board, player):
         return True
     return False
 
-#Vẽ lưới
+
+# Vẽ lưới
 def draw_grid():
-    board = pygame.transform.scale(
-            pygame.image.load('images/board.png'), (336, 336))
+    board = pygame.transform.scale(pygame.image.load("images/board.png"), (336, 336))
     board_x = 5
     board_y = 5
-    
     screen.blit(board, (board_x, board_y))
-    screen.blit(board, (board_x+336-6, board_y))
-    
+    screen.blit(board, (board_x + 336 - 6, board_y))
+
 
 # Khởi tạo bảng và người chơi
 num_rows = 10
@@ -64,9 +76,8 @@ while running:
             if board[row][col] == 0:
                 board[row][col] = current_player
                 draw_xo(x, y, current_player)
-                if check_win(board,current_player):
+                if check_win(board, current_player):
                     print(f"Player {current_player} wins!")
-                    running = False
                 else:
                     current_player = 2 if current_player == 1 else 1
 
