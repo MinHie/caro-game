@@ -33,15 +33,48 @@ def draw_xo(x, y, player):
 
 # Kiểm tra xem người chơi có thắng hay không
 def check_win(board, player):
-    for i in range(3):
-        if board[i][0] == player and board[i][1] == player and board[i][2] == player:
-            return True
-        if board[0][i] == player and board[1][i] == player and board[2][i] == player:
-            return True
-    if board[0][0] == player and board[1][1] == player and board[2][2] == player:
-        return True
-    if board[0][2] == player and board[1][1] == player and board[2][0] == player:
-        return True
+    # Check rows
+    for i in range(len(board)):
+        count = 0
+        for j in range(len(board[i])):
+            if board[i][j] == player:
+                count += 1
+                if count == 5:
+                    return True
+            else:
+                count = 0
+
+    # Check columns
+    for j in range(len(board[0])):
+        count = 0
+        for i in range(len(board)):
+            if board[i][j] == player:
+                count += 1
+                if count == 5:
+                    return True
+            else:
+                count = 0
+
+    # Check diagonal (top-left to bottom-right)
+    for i in range(len(board) - 4):
+        for j in range(len(board[i]) - 4):
+            count = 0
+            for k in range(5):
+                if board[i+k][j+k] == player:
+                    count += 1
+                    if count == 5:
+                        return True
+
+    # Check diagonal (top-right to bottom-left)
+    for i in range(4, len(board)):
+        for j in range(len(board[i]) - 4):
+            count = 0
+            for k in range(5):
+                if board[i-k][j+k] == player:
+                    count += 1
+                    if count == 5:
+                        return True
+
     return False
 
 
@@ -83,6 +116,7 @@ while running:
                 draw_xo(x, y, current_player)
                 if check_win(board, current_player):
                     print(f"Player {current_player} wins!")
+                    pygame.quit()
                 else:
                     current_player = 2 if current_player == 1 else 1
 
