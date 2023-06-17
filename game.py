@@ -114,7 +114,6 @@ while running:
             # Đặt ký hiệu 'X' hoặc 'O' vào ô vuông tương ứng và chuyển lượt cho người chơi khác
             if board[row][col] == 0:
                 board[row][col] = current_player
-                draw_xo(x, y, current_player)
                 if check_win(board, current_player):
                     print(f"Player {current_player} wins!")
                     player_win = current_player
