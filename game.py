@@ -27,7 +27,7 @@ def draw_xo(x, y, player):
         tic = pygame.transform.scale(
             pygame.image.load("images/o.png"), (TIC_SIZE, TIC_SIZE)
         )
-    text_rect = tic.get_rect(center=(x+BOARD_LINE, y+BOARD_LINE))
+    text_rect = tic.get_rect(center=(x + BOARD_LINE, y + BOARD_LINE))
     screen.blit(tic, text_rect)
 
 
@@ -60,7 +60,7 @@ def check_win(board, player):
         for j in range(len(board[i]) - 4):
             count = 0
             for k in range(5):
-                if board[i+k][j+k] == player:
+                if board[i + k][j + k] == player:
                     count += 1
                     if count == 5:
                         return True
@@ -70,7 +70,7 @@ def check_win(board, player):
         for j in range(len(board[i]) - 4):
             count = 0
             for k in range(5):
-                if board[i-k][j+k] == player:
+                if board[i - k][j + k] == player:
                     count += 1
                     if count == 5:
                         return True
@@ -96,6 +96,7 @@ num_rows = 12
 num_cols = 12
 board = [[0 for j in range(num_cols)] for i in range(num_rows)]
 current_player = 1
+player_win = 0
 
 # Vòng lặp chính của trò chơi
 running = True
@@ -104,7 +105,7 @@ while running:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             running = False
-        elif event.type == pygame.MOUSEBUTTONDOWN:
+        if event.type == pygame.MOUSEBUTTONDOWN and player_win == 0:
             # Lấy tọa độ của chuột khi người dùng click vào màn hình
             x, y = pygame.mouse.get_pos()
             # Tính toán vị trí của ô vuông tương ứng với tọa độ của chuột
@@ -116,7 +117,7 @@ while running:
                 draw_xo(x, y, current_player)
                 if check_win(board, current_player):
                     print(f"Player {current_player} wins!")
-                    pygame.quit()
+                    player_win = current_player
                 else:
                     current_player = 2 if current_player == 1 else 1
 
@@ -130,6 +131,11 @@ while running:
                 y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
                 draw_xo(x, y, board[i][j])
 
+    if player_win != 0:
+        if player_win == 1:
+            screen.blit(x_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))
+        if player_win == 2:
+            screen.blit(o_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))
     # Cập nhật màn hình
     pygame.display.update()
 # Kết thúc trò chơi và đóng cửa sổ
