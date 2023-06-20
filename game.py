@@ -5,13 +5,13 @@ from player import Player
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
 BACKGROUND_COLOR = (168, 96, 93)
-BOARD_SIZE = 336
-BOARD_LINE = 6
-SQUARE_SIZE = 100
-MARGIN = 10
-TIC_SIZE = 90
-COLUMNS = 9
-ROWS = 6
+BOARD_SIZE = 168
+BOARD_LINE = 3
+SQUARE_SIZE = 50
+MARGIN = 5
+TIC_SIZE = 40
+COLUMNS = 18
+ROWS = 12
 
 class Game:
     def __init__(self, player1: Player, player2: Player):
