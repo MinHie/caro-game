@@ -11,8 +11,8 @@ class Board:
         board_x = 10
         board_y = 10
         x = BOARD_SIZE - BOARD_LINE
-        for i in range(0, 3):
-            for j in range(0, 2):
+        for i in range(0, 6):
+            for j in range(0, 4):
                 screen.blit(board, (board_x + x * i, board_y + x * j))
 
     def mark(self, row, col, player):

@@ -5,13 +5,13 @@ from player import Player
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
 BACKGROUND_COLOR = (168, 96, 93)
-BOARD_SIZE = 336
-BOARD_LINE = 6
-SQUARE_SIZE = 100
-MARGIN = 10
-TIC_SIZE = 90
-COLUMNS = 9
-ROWS = 6
+BOARD_SIZE = 174
+BOARD_LINE = 3
+SQUARE_SIZE = 60
+TIC_SIZE = 48
+COLUMNS = 18
+ROWS = 12
+
 
 class Game:
     def __init__(self, player1: Player, player2: Player):
@@ -67,8 +67,7 @@ class Game:
 
     def draw_xo(self, x, y, player: Player):
         tic = pygame.transform.scale(player.symbol, (TIC_SIZE, TIC_SIZE))
-        text_rect = tic.get_rect(center=(x + BOARD_LINE, y + BOARD_LINE))
-        self.screen.blit(tic, text_rect)
+        self.screen.blit(tic, (x, y))
 
     def draw(self):
         self.board.draw(self.screen, BOARD_SIZE, BOARD_LINE)
@@ -76,19 +75,27 @@ class Game:
         for i in range(ROWS):
             for j in range(COLUMNS):
                 if self.board.matrix[i][j] != -1:
-                    x = 10 * (j + 1) + SQUARE_SIZE * j + SQUARE_SIZE // 2
-                    y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
+                    x = 10 + BOARD_LINE * 2 + (SQUARE_SIZE - BOARD_LINE) * j
+                    y = 10 + BOARD_LINE * 2 + (SQUARE_SIZE - BOARD_LINE) * i
                     player = self.players[self.board.matrix[i][j]]
                     self.draw_xo(x, y, player)
-        
+
         if self.player_win:
             if self.current_player == 0:
-                x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
-                self.screen.blit(x_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2))
+                x_win = pygame.transform.scale(
+                    pygame.image.load("images/x_won.png"), (250, 50)
+                )
+                self.screen.blit(
+                    x_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2)
+                )
             if self.current_player == 1:
-                o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
-                self.screen.blit(o_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2))
-                    
+                o_win = pygame.transform.scale(
+                    pygame.image.load("images/o_won.png"), (250, 50)
+                )
+                self.screen.blit(
+                    o_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2)
+                )
+
     def run(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
@@ -103,8 +110,8 @@ class Game:
                 if event.type == pygame.MOUSEBUTTONDOWN and not self.player_win:
                     x, y = pygame.mouse.get_pos()
 
-                    row = (y - MARGIN) // (SQUARE_SIZE + MARGIN)
-                    col = (x - MARGIN) // (SQUARE_SIZE + MARGIN)
+                    col = (x - BOARD_LINE * 2) // (SQUARE_SIZE - BOARD_LINE)
+                    row = (y - BOARD_LINE * 2) // (SQUARE_SIZE - BOARD_LINE)
 
                     player = self.players[self.current_player]
                     self.board.mark(row, col, self.current_player)
@@ -119,10 +126,14 @@ class Game:
                     print("//")
                     print(self.current_player)
 
-                    self.current_player = (self.current_player + 1) % 2 if not self.player_win else self.current_player
+                    self.current_player = (
+                        (self.current_player + 1) % 2
+                        if not self.player_win
+                        else self.current_player
+                    )
 
             self.screen.fill(BACKGROUND_COLOR)
 
             self.draw()
-            
+
             pygame.display.update()
