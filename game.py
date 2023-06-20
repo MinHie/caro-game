@@ -4,17 +4,18 @@ from player import Player
 
 SCREEN_WIDTH = 1200
 SCREEN_HEIGHT = 720
+SIZE = 2
+BOARD_SIZE = 58 * SIZE
+BOARD_LINE = 1 * SIZE
+SQUARE_SIZE = 20 * SIZE
+TIC_SIZE = 16 * SIZE
+COLUMNS = 32
+ROWS = 18
 BACKGROUND_COLOR = (168, 96, 93)
-BOARD_SIZE = 174
-BOARD_LINE = 3
-SQUARE_SIZE = 60
-TIC_SIZE = 48
-COLUMNS = 18
-ROWS = 12
 
 
 class Game:
-    def __init__(self, player1: Player, player2: Player):
+    def __init__(self, screen, player1: Player, player2: Player):
         self.board = Board(COLUMNS, ROWS)
         self.players = [player1, player2]
         self.current_player = 0
@@ -70,7 +71,9 @@ class Game:
         self.screen.blit(tic, (x, y))
 
     def draw(self):
-        self.board.draw(self.screen, BOARD_SIZE, BOARD_LINE)
+        self.board.draw(
+            self.screen, BOARD_SIZE, BOARD_LINE, int(ROWS / 3), int(COLUMNS / 3)
+        )
 
         for i in range(ROWS):
             for j in range(COLUMNS):
@@ -81,26 +84,18 @@ class Game:
                     self.draw_xo(x, y, player)
 
         if self.player_win:
+            rect = ((SCREEN_WIDTH - 500) / 2, (SCREEN_HEIGHT - 100) / 2)
             if self.current_player == 0:
-                x_win = pygame.transform.scale(
-                    pygame.image.load("images/x_won.png"), (250, 50)
-                )
-                self.screen.blit(
-                    x_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2)
-                )
-            if self.current_player == 1:
-                o_win = pygame.transform.scale(
-                    pygame.image.load("images/o_won.png"), (250, 50)
-                )
-                self.screen.blit(
-                    o_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2)
-                )
+                img = pygame.image.load("images/x_won.png")
+            else:
+                img = pygame.image.load("images/o_won.png")
+            win = pygame.transform.scale(img, (500, 100))
+            self.screen.blit(win, rect)
 
     def run(self):
         pygame.init()
         self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Caro Game")
-        player_win = False
         while True:
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
@@ -113,24 +108,19 @@ class Game:
                     col = (x - BOARD_LINE * 2) // (SQUARE_SIZE - BOARD_LINE)
                     row = (y - BOARD_LINE * 2) // (SQUARE_SIZE - BOARD_LINE)
 
-                    player = self.players[self.current_player]
-                    self.board.mark(row, col, self.current_player)
+                    if self.board.matrix[row][col] == -1:
+                        player = self.players[self.current_player]
+                        self.board.mark(row, col, self.current_player)
 
-                    for i in self.board.matrix:
-                        print(i)
+                        if self.check_win():
+                            print("Player " + player.name + " win")
+                            self.player_win = True
 
-                    if self.check_win():
-                        print("Player " + player.name + " win")
-                        self.player_win = True
-
-                    print("//")
-                    print(self.current_player)
-
-                    self.current_player = (
-                        (self.current_player + 1) % 2
-                        if not self.player_win
-                        else self.current_player
-                    )
+                        self.current_player = (
+                            (self.current_player + 1) % 2
+                            if not self.player_win
+                            else self.current_player
+                        )
 
             self.screen.fill(BACKGROUND_COLOR)
 
