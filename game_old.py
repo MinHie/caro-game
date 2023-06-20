@@ -132,9 +132,9 @@ while running:
 
     if player_win != 0:
         if player_win == 1:
-            screen.blit(x_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))
+            screen.blit(x_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2))
         if player_win == 2:
-            screen.blit(o_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))
+            screen.blit(o_win, ((SCREEN_WIDTH - 250) / 2, (SCREEN_HEIGHT - 50) / 2))
     # Cập nhật màn hình
     pygame.display.update()
 # Kết thúc trò chơi và đóng cửa sổ
