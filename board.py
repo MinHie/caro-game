@@ -18,3 +18,4 @@ class Board:
     def mark(self, row, col, player):
         if self.matrix[row][col] == 0:
             self.matrix[row][col] = player
+            

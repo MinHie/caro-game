@@ -2,7 +2,8 @@ import pygame
 from board import Board
 from player import Player
 
-
+x_win = pygame.transform.scale(pygame.image.load("images/x_won.png"), (250, 50))
+o_win = pygame.transform.scale(pygame.image.load("images/o_won.png"), (250, 50))
 BACKGROUND_COLOR = (168, 96, 93)
 BOARD_SIZE = 336
 BOARD_LINE = 6
@@ -89,11 +90,15 @@ class Game:
                     player = self.players[self.current_player]
                     self.board.mark(row, col, player.number)
                     if self.check_win(player):
-                        print("Player " + player + " win")
-
+                        print(f"Player {player} wins!")
+                        player_win = player
+                    else:
+                        player = 2 if player == 1 else 1
                     for i in self.board.matrix:
                         print(i)
                     print("//")
+                    
+                    self.current_player = (self.current_player + 1) % 2
 
             self.screen.fill(BACKGROUND_COLOR)
 
@@ -106,7 +111,9 @@ class Game:
                         y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
                         player = self.players[0] if self.board.matrix[i][j] == 1 else self.players[1]
                         self.draw_xo(x, y, player)
-
-            self.current_player = (self.current_player + 1) % 2
-
+            if player_win != 0:
+                if player_win == 1:
+                    self.screen.blit(x_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))
+                if player_win == 2:
+                    self.screen.blit(o_win, ((SCREEN_WIDTH-250) / 2, (SCREEN_HEIGHT-50) / 2))            
             pygame.display.update()
