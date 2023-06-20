@@ -2,7 +2,7 @@ import pygame
 from board import Board
 from player import Player
 
-SCREEN_WIDTH = 1200
+SCREEN_WIDTH = 1280
 SCREEN_HEIGHT = 720
 SIZE = 2
 BOARD_SIZE = 58 * SIZE
@@ -13,6 +13,10 @@ COLUMNS = 32
 ROWS = 18
 BACKGROUND_COLOR = (168, 96, 93)
 
+pygame.init()
+click_sound = pygame.mixer.Sound("sounds/click.wav")
+victory_sound = pygame.mixer.Sound("sounds/victory.wav")
+lose_sound = pygame.mixer.Sound("sounds/lose.wav")
 
 class Game:
     def __init__(self, screen, player1: Player, player2: Player):
@@ -110,9 +114,10 @@ class Game:
                     if self.board.matrix[row][col] == -1:
                         player = self.players[self.current_player]
                         self.board.mark(row, col, self.current_player)
-
+                        click_sound.play()
                         if self.check_win():
                             print("Player " + player.name + " win")
+                            victory_sound.play()
                             self.player_win = True
 
                         self.current_player = (
