@@ -16,6 +16,7 @@ BACKGROUND_COLOR = (168, 96, 93)
 
 class Game:
     def __init__(self, screen, player1: Player, player2: Player):
+        self.screen = screen
         self.board = Board(COLUMNS, ROWS)
         self.players = [player1, player2]
         self.current_player = 0
@@ -93,8 +94,6 @@ class Game:
             self.screen.blit(win, rect)
 
     def run(self):
-        pygame.init()
-        self.screen = pygame.display.set_mode((SCREEN_WIDTH, SCREEN_HEIGHT))
         pygame.display.set_caption("Caro Game")
         while True:
             for event in pygame.event.get():
