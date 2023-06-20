@@ -94,6 +94,8 @@ class Game:
                     for i in self.board.matrix:
                         print(i)
                     print("//")
+                    
+                    self.current_player = (self.current_player + 1) % 2
 
             self.screen.fill(BACKGROUND_COLOR)
 
@@ -106,7 +108,5 @@ class Game:
                         y = 10 * (i + 1) + SQUARE_SIZE * i + SQUARE_SIZE // 2
                         player = self.players[0] if self.board.matrix[i][j] == 1 else self.players[1]
                         self.draw_xo(x, y, player)
-
-            self.current_player = (self.current_player + 1) % 2
-
+                        
             pygame.display.update()
